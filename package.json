@@ -1,6 +1,6 @@
 {
   "name": "unity-n-atf",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Action trigger filter framework",
   "main": "index.js",
   "repository": {

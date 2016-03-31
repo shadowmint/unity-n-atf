@@ -30,18 +30,33 @@ namespace N.ATF.Internal
         /// Trigger a specific type of trigger.
         public void Trigger<T>() where T : ITrigger
         {
+            Trigger<T, int>(0);
+        }
+
+        /// Trigger a specific type of trigger.
+        public void Trigger<T, TConfig>(TConfig config) where T : ITrigger
+        {
             var collection = Triggers.Where(t => Types.Implements<T>(t))
                                      .Select(t => CreateInstance(t));
 
             var task = new ActionSequence();
             foreach (var trigger in collection.OrderByDescending(action => action.Priority))
-            { task.Add(trigger); }
+            {
+                trigger.Configure(config);
+                task.Add(trigger);
+            }
 
             events.Actions.Execute(task);
         }
 
         /// Trigger a specific type of trigger.
         public PreparedAction Prepare<T>() where T : ITrigger
+        {
+            return Prepare<T, int>(0);
+        }
+
+        /// Trigger a specific type of trigger.
+        public PreparedAction Prepare<T, TConfig>(TConfig config) where T : ITrigger
         {
             var collection = Triggers.Where(t => Types.Implements<T>(t))
                                      .Select(t => CreateInstance(t));

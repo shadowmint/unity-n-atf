@@ -27,7 +27,7 @@ namespace N.ATF
         }
 
         /// Return a prepared action
-        public static PreparedAction Prepare<T>(this IEventService self) where T : class, IConfiguredAction
+        public static PreparedAction Prepare<T>(this IEventService self) where T : class, IAction
         {
             var action = Service.Registry.CreateInstance<T>();
             return new PreparedAction(action, self);
