@@ -1,9 +1,9 @@
 using N.Package.Events;
 using System.Collections.Generic;
-using N.ATF.Utils;
+using N.Package.ATF.Utils;
 using System.Linq;
 
-namespace N.ATF.Internal
+namespace N.Package.ATF.Internal
 {
     /// Sort and execute filters by type and priority
     public class DefaultFilterService : IFilterService

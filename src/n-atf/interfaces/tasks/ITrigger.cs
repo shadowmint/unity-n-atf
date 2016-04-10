@@ -1,7 +1,7 @@
 using NE = N.Package.Events;
-using N.ATF.Internal;
+using N.Package.ATF.Internal;
 
-namespace N.ATF
+namespace N.Package.ATF
 {
     /// Darthstore task which is executed when a condition is met.
     /// Triggers are executed in priority order.

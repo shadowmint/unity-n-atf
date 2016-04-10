@@ -1,6 +1,6 @@
 using NE = N.Package.Events;
 
-namespace N.ATF
+namespace N.Package.ATF
 {
     /// Delegate for multiple type filters
     public delegate bool FilterTemplateDelegate<T>(T target);

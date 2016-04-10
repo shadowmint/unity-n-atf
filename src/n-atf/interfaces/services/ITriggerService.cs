@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using NE = N.Package.Events;
 
-namespace N.ATF
+namespace N.Package.ATF
 {
     /// Global triggers api
     public interface ITriggerService

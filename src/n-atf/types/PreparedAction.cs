@@ -1,6 +1,6 @@
 using NE = N.Package.Events;
 
-namespace N.ATF
+namespace N.Package.ATF
 {
     /// A wrapper for an action for some useful features
     public class PreparedAction

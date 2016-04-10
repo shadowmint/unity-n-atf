@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using N.Package.Bind;
-using N.ATF;
+using N.Package.ATF;
 
-namespace N.ATF.Utils
+namespace N.Package.ATF.Utils
 {
     public class Types
     {

@@ -1,6 +1,6 @@
 using NE = N.Package.Events;
 
-namespace N.ATF
+namespace N.Package.ATF
 {
     /// This is a template or simple common trigger types
     public abstract class TriggerTemplate : ITrigger

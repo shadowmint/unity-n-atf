@@ -1,6 +1,6 @@
 using N.Package.Events;
 
-namespace N.ATF
+namespace N.Package.ATF
 {
     /// Global time and actions api
     public interface IDebugService

@@ -1,7 +1,7 @@
 using NE = N.Package.Events;
 using System.Collections.Generic;
 
-namespace N.ATF.Internal
+namespace N.Package.ATF.Internal
 {
     /// Keep track of players and things
     public class DefaultEventService : IEventService

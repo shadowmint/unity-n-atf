@@ -1,6 +1,6 @@
 using N.Package.Events;
 
-namespace N.ATF
+namespace N.Package.ATF
 {
     public class TriggerSequence : ActionSequence, IConfiguredAction
     {

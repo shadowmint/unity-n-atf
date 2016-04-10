@@ -1,7 +1,7 @@
 using NE = N.Package.Events;
-using N.ATF.Internal;
+using N.Package.ATF.Internal;
 
-namespace N.ATF
+namespace N.Package.ATF
 {
     /// A filter maps over a target and either rejects or accepts it based on conditions.
     public interface IFilter : ITask

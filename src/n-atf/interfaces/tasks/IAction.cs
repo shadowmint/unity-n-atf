@@ -1,9 +1,9 @@
 using NE = N.Package.Events;
-using N.ATF.Internal;
+using N.Package.ATF.Internal;
 
-namespace N.ATF
+namespace N.Package.ATF
 {
-    /// N.ATF task api; do a thing.
+    /// N.Package.ATF task api; do a thing.
     public interface IAction : ITask, NE.IAction
     {
     }

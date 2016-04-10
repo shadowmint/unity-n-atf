@@ -1,4 +1,4 @@
-namespace N.ATF.Internal
+namespace N.Package.ATF.Internal
 {
     /// Common base for tasks
     public interface ITask

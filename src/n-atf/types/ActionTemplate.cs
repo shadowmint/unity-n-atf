@@ -1,6 +1,6 @@
 using NE = N.Package.Events;
 
-namespace N.ATF
+namespace N.Package.ATF
 {
     /// Generate completion delegate helper
     public delegate void ActionWaitHandler();

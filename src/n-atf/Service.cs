@@ -1,9 +1,9 @@
 using N.Package.Bind;
-using N.ATF.Internal;
-using N.ATF.Utils;
+using N.Package.ATF.Internal;
+using N.Package.ATF.Utils;
 using System.Linq;
 
-namespace N.ATF
+namespace N.Package.ATF
 {
     /// Darthstore service registry
     public class Service

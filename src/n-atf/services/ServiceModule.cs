@@ -1,7 +1,7 @@
 using N.Package.Bind;
 using System.Linq;
 
-namespace N.ATF.Internal
+namespace N.Package.ATF.Internal
 {
     /// Darthstore service registry
     public class ServiceModule : IServiceModule, IServiceModuleFactory

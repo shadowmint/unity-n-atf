@@ -1,7 +1,7 @@
 #if N_ATF_TESTS
 using NUnit.Framework;
-using N.ATF;
-using N.ATF.Internal;
+using N.Package.ATF;
+using N.Package.ATF.Internal;
 
 public class ActionsTests : N.Tests.Test
 {

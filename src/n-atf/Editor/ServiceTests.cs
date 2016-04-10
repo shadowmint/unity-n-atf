@@ -1,6 +1,6 @@
 #if N_ATF_TESTS
 using NUnit.Framework;
-using N.ATF;
+using N.Package.ATF;
 
 public class ServiceTests : N.Tests.Test
 {

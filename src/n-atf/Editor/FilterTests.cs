@@ -1,8 +1,8 @@
 #if N_ATF_TESTS
 using System.Collections.Generic;
 using NUnit.Framework;
-using N.ATF;
-using N.ATF.Internal;
+using N.Package.ATF;
+using N.Package.ATF.Internal;
 
 public interface ITestFilter : IFilter {}
 public interface ITestFilter2 : IFilter {}
