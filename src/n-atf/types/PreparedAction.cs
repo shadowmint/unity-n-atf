@@ -6,9 +6,9 @@ namespace N.Package.ATF
     public class PreparedAction
     {
         private IEventService events;
-        private IConfiguredAction action;
+        private IAction action;
 
-        public PreparedAction(IConfiguredAction action, IEventService events)
+        public PreparedAction(IAction action, IEventService events)
         {
             this.action = action;
             this.events = events;

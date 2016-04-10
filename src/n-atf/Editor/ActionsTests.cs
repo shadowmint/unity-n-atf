@@ -19,6 +19,7 @@ public class ActionsTests : N.Tests.Test
         public ITestBinding Test { get; set; }
         public override string Description { get { return "Test action"; } }
         public override void Execute() { done = true; }
+        public override bool Configure<T>(T c) { return false; }
         public void ForceComplete() { Complete(); }
         public bool done = false;
     }
