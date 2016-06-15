@@ -9,6 +9,47 @@ scaffold for building applications.
 
 See the tests in the `Editor/` folder for each class for usage examples.
 
+Basic common usage is to use bound services via the `Service` singleton:
+
+```
+using N.Package.ATF;
+using UnityEngine;
+
+public class MyBehaviour : MonoBehaviour
+{
+    /// Services
+    public IEventService EventService { get; set; }
+    public ITriggerService TriggerService { get; set; }
+
+    public void Awake()
+    {
+        /// Make sure not to just call Registry.Default.Bind() here from
+        /// N.Package.Bind; the `Service` class performs smart module lookup!
+        Service.Registry.Bind(this);
+    }
+
+    public void Start()
+    {
+        EventService.Action<SomeAction>();
+
+        var action = EventService.Prepare<SomeConfiguredAction>();
+        action.Configure(this);
+        EventService.Execute(action);
+    }
+}
+```
+
+## Action, Trigger, Filter
+
+- Actions: Perform some async task, eg. start an animation, run a sequence of audio clips.
+
+- Trigger: Trigger various effects, in a specific order using priority.
+
+- Filter: Setup reusable filters using priority order.
+
+ie. These are basic scaffolding for high level 'Command Pattern' types, specifically for complex
+duration async events.
+
 ## Install
 
 From your unity project folder:
