@@ -4,13 +4,16 @@ using N.Package.ATF;
 public class ActionFactory : MonoBehaviour
 {
     [Tooltip("Drag an object here to select it")]
-    public GameObject target;
+    public GameObject[] targets;
 
-    [Tooltip("Trigger 'Go Tiny' on target")]
+    [Tooltip("Trigger 'Go Tiny' on targets")]
     public bool goTiny = false;
 
-    [Tooltip("Trigger 'Color cycle' on target")]
+    [Tooltip("Trigger 'Color cycle' on targets")]
     public bool colorCycle = false;
+
+    [Tooltip("Trigger 'Sequence test' on targets")]
+    public bool seqTests = false;
 
     /// Services
     public IEventService Events { get; set; }
@@ -22,19 +25,43 @@ public class ActionFactory : MonoBehaviour
 
     public void Update()
     {
-        if (goTiny)
+        if (targets.Length > 0)
         {
-            goTiny = false;
-            var action = Events.Prepare<GoTinyAction>();
-            action.Configure(target);
-            action.Execute();
-        }
-        if (colorCycle)
-        {
-            colorCycle = false;
-            var action = Events.Prepare<ColorCycleAction>();
-            action.Configure(target);
-            action.Execute();
+            if (goTiny)
+            {
+                goTiny = false;
+                for (var i = 0; i < targets.Length; ++i)
+                {
+                    var action = Events.Prepare<GoTinyAction>();
+                    action.Configure(targets[i]);
+                    action.Execute();
+                }
+            }
+            if (colorCycle)
+            {
+                colorCycle = false;
+                for (var i = 0; i < targets.Length; ++i)
+                {
+                    var action = Events.Prepare<ColorCycleAction>();
+                    action.Configure(targets[i]);
+                    action.Execute();
+                }
+            }
+            if (seqTests)
+            {
+                seqTests = false;
+                for (var i = 0; i < targets.Length; ++i)
+                {
+                    var action = Events.Prepare<SeqTestAction>();
+                    action.Configure(targets[i]);
+                    action.Execute();
+                }
+            }
         }
     }
+
+    // Ui events
+    public void TriggerGoTiny() { goTiny = true; }
+    public void TriggerSeqTests() { seqTests = true; }
+    public void TriggerColorCycle() { colorCycle = true; }
 }

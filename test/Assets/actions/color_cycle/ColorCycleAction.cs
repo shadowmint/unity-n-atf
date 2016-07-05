@@ -5,29 +5,35 @@ using N.Package.ATF;
 public class ColorCycleAction : ActionTemplate
 {
     public GameObject target;
+    public Animator animator;
 
     public override string Description { get { return "Trigger the 'Color' animation state on the target"; } }
+
+    /// Services
+    public IEventService Events { get; set; }
 
     public override void Execute()
     {
         if (target != null)
         {
-            var animator = target.GetComponentInChildren<Animator>();
+            animator = target.GetComponentInChildren<Animator>();
             animator.SetBool("Color", true);
 
-            var marker = target.AddComponent<ColorCycleMarker>();
-            marker.action = this;
+            // When the animation state triggers a start event on this object, clear this event for that target.
+            CompleteOnAnimationTrigger<ColorCycleTrigger>(target, AnimationTriggerType.START);
         }
         else
         {
-            Completed();
+            Complete();
         }
     }
 
-    // Run this when the action completes
-    public void Completed()
+    protected override void PreComplete()
     {
-        Complete();
+        if (animator != null)
+        {
+            animator.SetBool("Color", false);
+        }
     }
 
     // Configure with target game object
