@@ -3,65 +3,73 @@ using N.Package.ATF;
 
 public class ActionFactory : MonoBehaviour
 {
-    [Tooltip("Drag an object here to select it")]
-    public GameObject[] targets;
+  [Tooltip("Drag an object here to select it")]
+  public GameObject[] targets;
 
-    [Tooltip("Trigger 'Go Tiny' on targets")]
-    public bool goTiny = false;
+  [Tooltip("Trigger 'Go Tiny' on targets")]
+  public bool goTiny = false;
 
-    [Tooltip("Trigger 'Color cycle' on targets")]
-    public bool colorCycle = false;
+  [Tooltip("Trigger 'Color cycle' on targets")]
+  public bool colorCycle = false;
 
-    [Tooltip("Trigger 'Sequence test' on targets")]
-    public bool seqTests = false;
+  [Tooltip("Trigger 'Sequence test' on targets")]
+  public bool seqTests = false;
 
-    /// Services
-    public IEventService Events { get; set; }
+  public void Awake()
+  {
+    Service.Registry.Bind(this);
+  }
 
-    public void Awake()
+  public void Update()
+  {
+    if (targets.Length > 0)
     {
-        Service.Registry.Bind(this);
-    }
-
-    public void Update()
-    {
-        if (targets.Length > 0)
+      if (goTiny)
+      {
+        goTiny = false;
+        for (var i = 0; i < targets.Length; ++i)
         {
-            if (goTiny)
-            {
-                goTiny = false;
-                for (var i = 0; i < targets.Length; ++i)
-                {
-                    var action = Events.Prepare<GoTinyAction>();
-                    action.Configure(targets[i]);
-                    action.Execute();
-                }
-            }
-            if (colorCycle)
-            {
-                colorCycle = false;
-                for (var i = 0; i < targets.Length; ++i)
-                {
-                    var action = Events.Prepare<ColorCycleAction>();
-                    action.Configure(targets[i]);
-                    action.Execute();
-                }
-            }
-            if (seqTests)
-            {
-                seqTests = false;
-                for (var i = 0; i < targets.Length; ++i)
-                {
-                    var action = Events.Prepare<SeqTestAction>();
-                    action.Configure(targets[i]);
-                    action.Execute();
-                }
-            }
+          var action = new GoTinyAction();
+          action.Configure(targets[i]);
+          action.Execute();
         }
+      }
+      if (colorCycle)
+      {
+        colorCycle = false;
+        for (var i = 0; i < targets.Length; ++i)
+        {
+          var action = new ColorCycleAction();
+          action.Configure(targets[i]);
+          action.Execute();
+        }
+      }
+      if (seqTests)
+      {
+        seqTests = false;
+        for (var i = 0; i < targets.Length; ++i)
+        {
+          var action = new SeqTestAction();
+          action.Configure(targets[i]);
+          action.Execute();
+        }
+      }
     }
+  }
 
-    // Ui events
-    public void TriggerGoTiny() { goTiny = true; }
-    public void TriggerSeqTests() { seqTests = true; }
-    public void TriggerColorCycle() { colorCycle = true; }
+  // Ui events
+  public void TriggerGoTiny()
+  {
+    goTiny = true;
+  }
+
+  public void TriggerSeqTests()
+  {
+    seqTests = true;
+  }
+
+  public void TriggerColorCycle()
+  {
+    colorCycle = true;
+  }
 }

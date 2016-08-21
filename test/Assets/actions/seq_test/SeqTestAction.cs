@@ -1,51 +1,62 @@
 using UnityEngine;
 using N.Package.ATF;
+using N.Package.Command;
 using N.Package.Events;
 
 /// Trigger the 'MakeTiny' animation state on the target.
-public class SeqTestAction : ActionTemplate
+public class SeqTestAction : IAction
 {
-    public GameObject target;
+  public GameObject Target;
+  private readonly EventHandler _eventHandler = new EventHandler();
 
-    public override string Description { get { return "Run a bunch of animations"; } }
+  public string Description
+  {
+    get { return "Run a bunch of animations"; }
+  }
 
-    public IEventService Events { get; set; }
+  public EventHandler EventHandler
+  {
+    get { return _eventHandler; }
+  }
 
-    public override void Execute()
+  public bool CanExecute()
+  {
+    return true;
+  }
+
+  public void Execute()
+  {
+    if (Target != null)
     {
-        if (target != null)
-        {
-            var sequence = Events.Prepare<TriggerSequence>();
+      var sequence = new CommandSequence();
 
-            N.Package.ATF.IAction action = new GoTinyAction();
-            action.Configure(target);
-            sequence.As<TriggerSequence>().Add(action);
+      IAction action = new GoTinyAction();
+      action.Configure(Target);
+      sequence.Add(action);
 
-            action = new ColorCycleAction();
-            action.Configure(target);
-            sequence.As<TriggerSequence>().Add(action);
+      action = new ColorCycleAction();
+      action.Configure(Target);
+      sequence.Add(action);
 
-            action = new GoTinyAction();
-            action.Configure(target);
-            sequence.As<TriggerSequence>().Add(action);
+      action = new GoTinyAction();
+      action.Configure(Target);
+      sequence.Add(action);
 
-            sequence.OnComplete(() => { Complete(); });
-            sequence.Execute();
-        }
-        else
-        {
-            Complete();
-        }
+      sequence.OnCompleted((ep) => { this.Completed(); });
+      sequence.Execute();
     }
-
-    // Configure with target game object
-    public override bool Configure<T>(T instance)
+    else
     {
-        if (instance is GameObject)
-        {
-            target = (GameObject) (object) instance;
-            return true;
-        }
-        return false;
+      this.Completed();
     }
+  }
+
+  // Configure with target game object
+  public bool Configure<T>(T instance)
+  {
+    var obj = instance as GameObject;
+    if (obj == null) return false;
+    Target = (GameObject) (object) instance;
+    return true;
+  }
 }

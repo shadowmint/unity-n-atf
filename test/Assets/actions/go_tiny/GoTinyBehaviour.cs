@@ -1,25 +1,26 @@
+using N.Package.Command;
 using UnityEngine;
 
 public class GoTinyBehaviour : MonoBehaviour
 {
-    public float duration = 0f;
+  public float Duration = 0f;
 
-    public float targetScale = 0.5f;
+  public float TargetScale = 0.5f;
 
-    public float elapsed;
+  public float Elapsed;
 
-    public GoTinyAction action;
+  public GoTinyAction Action;
 
-    public void Update()
+  public void Update()
+  {
+    var factor = Mathf.Clamp((Duration - Elapsed)/Duration, 0f, 1f);
+    factor = TargetScale + (1.0f - TargetScale)*factor;
+    gameObject.transform.localScale = Vector3.one*factor;
+    Elapsed += Time.deltaTime;
+    if (Elapsed > Duration)
     {
-        var factor = Mathf.Clamp((duration - elapsed) / duration, 0f, 1f);
-        factor = targetScale + (1.0f - targetScale) * factor;
-        gameObject.transform.localScale = Vector3.one * factor;
-        elapsed += Time.deltaTime;
-        if (elapsed > duration)
-        {
-            action.Completed();
-            GameObject.Destroy(this);
-        }
+      Action.Completed();
+      Destroy(this);
     }
+  }
 }

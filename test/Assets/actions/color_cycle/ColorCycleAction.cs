@@ -1,49 +1,64 @@
 using UnityEngine;
 using N.Package.ATF;
+using N.Package.Command;
+using N.Package.Events;
 
 /// Trigger the 'MakeTiny' animation state on the target.
-public class ColorCycleAction : ActionTemplate
+public class ColorCycleAction : IAction
 {
-    public GameObject target;
-    public Animator animator;
+  public GameObject target;
+  public Animator animator;
 
-    public override string Description { get { return "Trigger the 'Color' animation state on the target"; } }
+  public string Description
+  {
+    get { return "Trigger the 'Color' animation state on the target"; }
+  }
 
-    /// Services
-    public IEventService Events { get; set; }
+  public EventHandler EventHandler
+  {
+    get { return _eventHandler; }
+    set { _eventHandler = value; }
+  }
 
-    public override void Execute()
+  private EventHandler _eventHandler = new EventHandler();
+  
+  public bool CanExecute()
+  {
+    return true;
+  }
+
+  public void Execute()
+  {
+    if (target != null)
     {
-        if (target != null)
-        {
-            animator = target.GetComponentInChildren<Animator>();
-            animator.SetBool("Color", true);
+      animator = target.GetComponentInChildren<Animator>();
+      animator.SetBool("Color", true);
 
-            // When the animation state triggers a start event on this object, clear this event for that target.
-            CompleteOnAnimationTrigger<ColorCycleTrigger>(target, AnimationTriggerType.START);
-        }
-        else
-        {
-            Complete();
-        }
+      // See the AnimationTrigger type for how this works; the ColorCycleTrigger
+      // is set on the state machine for the animation.
+      animator.OnAnimationTrigger((ep) =>
+      {
+        if (!ep.Is(AnimationTriggerType.End)) return false;
+        animator.SetBool("Color", false);
+        this.Completed();
+        return true;
+      });
     }
-
-    protected override void PreComplete()
+    else
     {
-        if (animator != null)
-        {
-            animator.SetBool("Color", false);
-        }
+      this.Completed();
     }
+  }
 
-    // Configure with target game object
-    public override bool Configure<T>(T instance)
+  // Configure with target game object
+  public bool Configure<T>(T instance)
+  {
+    var obj = instance as GameObject;
+    if (obj != null)
     {
-        if (instance.GetType() == typeof(GameObject))
-        {
-            target = (GameObject) (object) instance;
-            return true;
-        }
-        return false;
+      target = (GameObject) (object) instance;
+      return true;
     }
+    return false;
+  }
 }

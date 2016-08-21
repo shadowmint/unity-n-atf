@@ -1,41 +1,50 @@
 using UnityEngine;
 using N.Package.ATF;
+using N.Package.Command;
+using N.Package.Events;
 
 /// Trigger the 'MakeTiny' animation state on the target.
-public class GoTinyAction : ActionTemplate
+public class GoTinyAction : IAction
 {
-    public GameObject target;
+  public GameObject Target;
 
-    public override string Description { get { return "Trigger the 'Tiny' state on the target"; } }
+  public string Description
+  {
+    get { return "Trigger the 'Tiny' state on the target"; }
+  }
 
-    public override void Execute()
+  public EventHandler EventHandler
+  {
+    get { return _eventHandler; }
+    set { _eventHandler = value; }
+  }
+
+  private EventHandler _eventHandler = new EventHandler();
+
+  public bool CanExecute()
+  {
+    return true;
+  }
+
+  public void Execute()
+  {
+    if (Target != null)
     {
-        if (target != null)
-        {
-            var instance = target.AddComponent<GoTinyBehaviour>();
-            instance.action = this;
-            instance.duration = 2f;
-        }
-        else
-        {
-            Complete();
-        }
+      var instance = Target.AddComponent<GoTinyBehaviour>();
+      instance.Action = this;
+      instance.Duration = 2f;
     }
-
-    // Run this when the action completes
-    public void Completed()
+    else
     {
-        Complete();
+      this.Completed();
     }
+  }
 
-    // Configure with target game object
-    public override bool Configure<T>(T instance)
-    {
-		    if (instance.GetType() == typeof(GameObject))
-        {
-            target = (GameObject) (object) instance;
-            return true;
-        }
-        return false;
-    }
+  // Configure with target game object
+  public bool Configure<T>(T instance)
+  {
+    if (!(instance is GameObject)) return false;
+    Target = (GameObject) (object) instance;
+    return true;
+  }
 }
