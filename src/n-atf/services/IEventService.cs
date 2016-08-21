@@ -10,5 +10,8 @@ namespace N.Package.ATF
 
     /// Bind a command, execute it and then do something
     void Execute(ICommand command, Action<CommandExecutedEvent> onComplete);
+
+    /// Bind a command but return it instead of executing it.
+    IAction Prepare<T>() where T : class, IAction;
   }
 }

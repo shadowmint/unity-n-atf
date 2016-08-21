@@ -6,7 +6,11 @@ using N.Package.Events;
 /// Trigger the 'MakeTiny' animation state on the target.
 public class SeqTestAction : IAction
 {
+  // Services
+  public IEventService Events { get; set; }
+
   public GameObject Target;
+
   private readonly EventHandler _eventHandler = new EventHandler();
 
   public string Description
@@ -30,15 +34,15 @@ public class SeqTestAction : IAction
     {
       var sequence = new CommandSequence();
 
-      IAction action = new GoTinyAction();
+      IAction action = Events.Prepare<GoTinyAction>();
       action.Configure(Target);
       sequence.Add(action);
 
-      action = new ColorCycleAction();
+      action = Events.Prepare<ColorCycleAction>();
       action.Configure(Target);
       sequence.Add(action);
 
-      action = new GoTinyAction();
+      action = Events.Prepare<GoTinyAction>();
       action.Configure(Target);
       sequence.Add(action);
 

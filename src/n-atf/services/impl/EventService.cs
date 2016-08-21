@@ -27,5 +27,12 @@ namespace N.Package.ATF.Internal
       command.EventHandler.AddEventHandler(handler);
       command.Execute();
     }
+
+    public IAction Prepare<T>() where T : class, IAction
+    {
+      var instance = Activator.CreateInstance<T>();
+      Service.Registry.Bind(instance);
+      return instance;
+    }
   }
 }
