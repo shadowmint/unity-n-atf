@@ -1,31 +1,29 @@
 using System;
 using N.Package.Command;
+using N.Package.Events;
 
 namespace N.Package.ATF.Internal
 {
   public class EventService : IEventService
   {
-    public void Execute(ICommand command)
+    public void Execute<T>(T command) where T : class, ICommand
     {
       Service.Registry.Bind(command);
-      if (!command.CanExecute()) return;
-      command.Execute();
+      Handler<T>().Execute(command);
     }
 
-    public void Execute(ICommand command, Action<CommandExecutedEvent> onComplete)
+    public void Execute<T>(T command, Action<CommandExecutedEvent> onComplete) where T : class, ICommand
     {
       Service.Registry.Bind(command);
-      if (!command.CanExecute()) return;
 
-      Action<CommandExecutedEvent> handler = null;
-      handler = (ep) =>
+      EventBinding<Command.CommandExecutedEvent> binding = null;
+      binding = command.EventHandler.AddEventHandler<CommandExecutedEvent>((ep) =>
       {
-        command.EventHandler.RemoveEventHandler(handler);
+        if (binding != null) binding.Dispose();
         onComplete(ep);
-      };
+      });
 
-      command.EventHandler.AddEventHandler(handler);
-      command.Execute();
+      Handler<T>().Execute(command);
     }
 
     public IAction Prepare<T>() where T : class, IAction
@@ -33,6 +31,16 @@ namespace N.Package.ATF.Internal
       var instance = Activator.CreateInstance<T>();
       Service.Registry.Bind(instance);
       return instance;
+    }
+
+    private static ICommandHandler<T> Handler<T>() where T : class, ICommand
+    {
+      var handler = Service.Registry.Resolve<ICommandHandler<T>>();
+      if (handler == null)
+      {
+        throw new Exception(string.Format("No command handler bound to type: {0}", typeof(T).FullName));
+      }
+      return handler;
     }
   }
 }
